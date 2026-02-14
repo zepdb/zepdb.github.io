@@ -71,6 +71,7 @@
         <!-- Center: Links (hidden on mobile) -->
         <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
           <a href="#features" class="hover:text-white transition-colors">Features</a>
+          <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
           <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
           <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
         </div>
@@ -93,6 +94,7 @@
       <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-white/10 mt-2 pt-4">
         <div class="flex flex-col gap-3 text-sm text-gray-300">
           <a href="#features" class="hover:text-white transition-colors">Features</a>
+          <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
           <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
           <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
           <div class="flex gap-3 mt-2">
@@ -183,208 +185,238 @@
       </div>
     </section>
 
-    <!-- ========== ROW 1: PERFORMANCE + COST COMPARISON ========== -->
+    <!-- ========== PERFORMANCE BENCHMARKS ========== -->
     <section class="py-16 md:py-20 border-t border-black/10">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Performance at scale</h2>
+        <p class="text-sm text-gray-500 mb-1">1M vectors, 768d, cosine</p>
+        <a href="https://github.com/zepdb/zeppelin-benchmark" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-navy transition-colors underline underline-offset-2 mb-6">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.667A8.333 8.333 0 0 0 1.667 10c0 3.683 2.391 6.808 5.7 7.917.416.066.55-.192.55-.417v-1.408c-2.309.5-2.8-1.117-2.8-1.117-.384-.967-.925-1.225-.925-1.225-.759-.517.058-.5.058-.5.833.058 1.275.858 1.275.858.725 1.267 1.95.892 2.425.692.075-.542.292-.908.525-1.117-1.85-.208-3.792-.925-3.792-4.1 0-.925.317-1.666.859-2.258-.084-.208-.375-1.075.083-2.2 0 0 .7-.225 2.292.85A7.851 7.851 0 0 1 10 5.7c.708 0 1.425.092 2.083.275 1.592-1.075 2.292-.85 2.292-.85.458 1.125.167 1.992.083 2.2.542.592.859 1.333.859 2.258 0 3.184-1.95 3.884-3.809 4.092.3.258.575.767.575 1.542V17.5c0 .225.134.492.559.417C15.95 16.8 18.333 13.683 18.333 10A8.333 8.333 0 0 0 10 1.667Z"/></svg>
+          zepdb/zeppelin-benchmark
+        </a>
 
-          <!-- Left: Performance at scale -->
-          <div class="compact-col">
-            <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Performance at scale</h2>
-            <p class="text-sm text-gray-500 mb-1">1M vectors, 768d, cosine</p>
-            <a href="https://github.com/zepdb/zeppelin-benchmark" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-navy transition-colors underline underline-offset-2 mb-6">
-              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.667A8.333 8.333 0 0 0 1.667 10c0 3.683 2.391 6.808 5.7 7.917.416.066.55-.192.55-.417v-1.408c-2.309.5-2.8-1.117-2.8-1.117-.384-.967-.925-1.225-.925-1.225-.759-.517.058-.5.058-.5.833.058 1.275.858 1.275.858.725 1.267 1.95.892 2.425.692.075-.542.292-.908.525-1.117-1.85-.208-3.792-.925-3.792-4.1 0-.925.317-1.666.859-2.258-.084-.208-.375-1.075.083-2.2 0 0 .7-.225 2.292.85A7.851 7.851 0 0 1 10 5.7c.708 0 1.425.092 2.083.275 1.592-1.075 2.292-.85 2.292-.85.458 1.125.167 1.992.083 2.2.542.592.859 1.333.859 2.258 0 3.184-1.95 3.884-3.809 4.092.3.258.575.767.575 1.542V17.5c0 .225.134.492.559.417C15.95 16.8 18.333 13.683 18.333 10A8.333 8.333 0 0 0 10 1.667Z"/></svg>
-              zepdb/zeppelin-benchmark
-            </a>
-
-            <div class="fieldset-card mb-6" id="perf-chart">
-              <span class="fieldset-legend">Vector Search</span>
-              <div class="pt-2">
-                <div class="perf-group">
-                  <div class="perf-group-label">Warm p50</div>
-                  <div class="perf-row">
-                    <div class="perf-label">Zeppelin</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--zeppelin" data-width="45"></div>
-                    </div>
-                    <div class="perf-value">~45ms</div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="fieldset-card" id="perf-chart">
+            <span class="fieldset-legend">Vector Search</span>
+            <div class="pt-2">
+              <div class="perf-group">
+                <div class="perf-group-label">Warm p50</div>
+                <div class="perf-row">
+                  <div class="perf-label">Zeppelin</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--zeppelin" data-width="45"></div>
                   </div>
-                  <div class="perf-row">
-                    <div class="perf-label">Turbopuffer</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--competitor" data-width="8"></div>
-                    </div>
-                    <div class="perf-value">~8ms</div>
-                  </div>
+                  <div class="perf-value">~45ms</div>
                 </div>
-                <div class="perf-group">
-                  <div class="perf-group-label">Warm p99</div>
-                  <div class="perf-row">
-                    <div class="perf-label">Zeppelin</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--zeppelin" data-width="65"></div>
-                    </div>
-                    <div class="perf-value">~120ms</div>
+                <div class="perf-row">
+                  <div class="perf-label">Turbopuffer</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="8"></div>
                   </div>
-                  <div class="perf-row">
-                    <div class="perf-label">Turbopuffer</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--competitor" data-width="19"></div>
-                    </div>
-                    <div class="perf-value">~35ms</div>
-                  </div>
-                </div>
-                <div class="perf-group">
-                  <div class="perf-group-label">Cold</div>
-                  <div class="perf-row">
-                    <div class="perf-label">Zeppelin</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--zeppelin" data-width="100"></div>
-                    </div>
-                    <div class="perf-value">~800ms</div>
-                  </div>
-                  <div class="perf-row">
-                    <div class="perf-label">Turbopuffer</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--competitor" data-width="43"></div>
-                    </div>
-                    <div class="perf-value">~343ms</div>
-                  </div>
+                  <div class="perf-value">~8ms</div>
                 </div>
               </div>
-            </div>
-
-            <div class="fieldset-card">
-              <span class="fieldset-legend">Full-Text Search</span>
-              <div class="pt-2">
-                <div class="perf-group">
-                  <div class="perf-group-label">Warm p50</div>
-                  <div class="perf-row">
-                    <div class="perf-label">Zeppelin</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--zeppelin" data-width="20"></div>
-                    </div>
-                    <div class="perf-value">~20ms</div>
+              <div class="perf-group">
+                <div class="perf-group-label">Warm p99</div>
+                <div class="perf-row">
+                  <div class="perf-label">Zeppelin</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--zeppelin" data-width="65"></div>
                   </div>
-                  <div class="perf-row">
-                    <div class="perf-label">Turbopuffer</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--competitor" data-width="11"></div>
-                    </div>
-                    <div class="perf-value">~11ms</div>
-                  </div>
+                  <div class="perf-value">~120ms</div>
                 </div>
-                <div class="perf-group">
-                  <div class="perf-group-label">Cold</div>
-                  <div class="perf-row">
-                    <div class="perf-label">Zeppelin</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--zeppelin" data-width="54"></div>
-                    </div>
-                    <div class="perf-value">~120ms</div>
+                <div class="perf-row">
+                  <div class="perf-label">Turbopuffer</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="19"></div>
                   </div>
-                  <div class="perf-row">
-                    <div class="perf-label">Turbopuffer</div>
-                    <div class="perf-bar-track">
-                      <div class="perf-bar perf-bar--competitor" data-width="100"></div>
-                    </div>
-                    <div class="perf-value">~221ms</div>
+                  <div class="perf-value">~35ms</div>
+                </div>
+              </div>
+              <div class="perf-group">
+                <div class="perf-group-label">Cold</div>
+                <div class="perf-row">
+                  <div class="perf-label">Zeppelin</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--zeppelin" data-width="100"></div>
                   </div>
+                  <div class="perf-value">~800ms</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Turbopuffer</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="43"></div>
+                  </div>
+                  <div class="perf-value">~343ms</div>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Right: Competitor cost comparison -->
-          <div class="compact-col">
-            <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Cost comparison</h2>
-            <p class="text-sm text-gray-500 mb-6">Cheap now — the gap only grows at scale</p>
-
-            <!-- 1M vectors -->
-            <div class="fieldset-card mb-6">
-              <span class="fieldset-legend">Monthly cost — 1M vectors</span>
-              <div class="pt-2">
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Full-Text Search</span>
+            <div class="pt-2">
+              <div class="perf-group">
+                <div class="perf-group-label">Warm p50</div>
                 <div class="perf-row">
                   <div class="perf-label">Zeppelin</div>
                   <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--zeppelin" data-width="7"></div>
+                    <div class="perf-bar perf-bar--zeppelin" data-width="20"></div>
                   </div>
-                  <div class="perf-value">~$5/mo</div>
-                </div>
-                <div class="perf-row">
-                  <div class="perf-label">Weaviate</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="36"></div>
-                  </div>
-                  <div class="perf-value">~$25/mo</div>
+                  <div class="perf-value">~20ms</div>
                 </div>
                 <div class="perf-row">
                   <div class="perf-label">Turbopuffer</div>
                   <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="91"></div>
+                    <div class="perf-bar perf-bar--competitor" data-width="11"></div>
                   </div>
-                  <div class="perf-value">~$64/mo</div>
+                  <div class="perf-value">~11ms</div>
                 </div>
+              </div>
+              <div class="perf-group">
+                <div class="perf-group-label">Cold</div>
                 <div class="perf-row">
-                  <div class="perf-label">Qdrant Cloud</div>
+                  <div class="perf-label">Zeppelin</div>
                   <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="93"></div>
+                    <div class="perf-bar perf-bar--zeppelin" data-width="54"></div>
                   </div>
-                  <div class="perf-value">~$65/mo</div>
+                  <div class="perf-value">~120ms</div>
                 </div>
                 <div class="perf-row">
-                  <div class="perf-label">Pinecone</div>
+                  <div class="perf-label">Turbopuffer</div>
                   <div class="perf-bar-track">
                     <div class="perf-bar perf-bar--competitor" data-width="100"></div>
                   </div>
-                  <div class="perf-value">~$70/mo</div>
+                  <div class="perf-value">~221ms</div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            <!-- 10M vectors -->
-            <div class="fieldset-card">
-              <span class="fieldset-legend">Monthly cost — 10M vectors</span>
-              <div class="pt-2">
-                <div class="perf-row">
-                  <div class="perf-label">Zeppelin</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--zeppelin" data-width="7"></div>
-                  </div>
-                  <div class="perf-value">~$50/mo</div>
-                </div>
-                <div class="perf-row">
-                  <div class="perf-label">Turbopuffer</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="14"></div>
-                  </div>
-                  <div class="perf-value">~$100/mo</div>
-                </div>
-                <div class="perf-row">
-                  <div class="perf-label">Weaviate</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="36"></div>
-                  </div>
-                  <div class="perf-value">~$250/mo</div>
-                </div>
-                <div class="perf-row">
-                  <div class="perf-label">Qdrant Cloud</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="71"></div>
-                  </div>
-                  <div class="perf-value">~$500/mo</div>
-                </div>
-                <div class="perf-row">
-                  <div class="perf-label">Pinecone</div>
-                  <div class="perf-bar-track">
-                    <div class="perf-bar perf-bar--competitor" data-width="100"></div>
-                  </div>
-                  <div class="perf-value">~$700/mo</div>
+    <!-- ========== PRICING CALCULATOR ========== -->
+    <section id="pricing" class="py-16 md:py-20 border-t border-black/10">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Pricing calculator</h2>
+        <p class="text-sm text-gray-500 mb-8">Zeppelin = S3 storage + compute. Configure your setup and compare.</p>
+
+        <!-- Part A: Configuration + Cost Summary -->
+        <div class="grid md:grid-cols-5 gap-8 mb-8">
+
+          <!-- Left: Inputs (3 cols) -->
+          <div class="md:col-span-3 space-y-5">
+
+            <!-- Vector count slider -->
+            <div>
+              <label class="calc-label">Number of vectors</label>
+              <div class="flex items-center gap-3">
+                <input type="range" id="calc-vectors" class="calc-slider flex-1" min="0" max="100" value="50" step="1">
+                <span id="calc-vectors-display" class="font-mono text-sm font-semibold text-navy min-w-[4rem] text-right">10M</span>
+              </div>
+            </div>
+
+            <!-- Dimensions + Metadata row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="calc-label" for="calc-dims">Vector dimensions</label>
+                <select id="calc-dims" class="calc-select">
+                  <option value="128">128</option>
+                  <option value="256">256</option>
+                  <option value="384">384</option>
+                  <option value="512">512</option>
+                  <option value="768" selected>768</option>
+                  <option value="1024">1024</option>
+                  <option value="1536">1536</option>
+                  <option value="3072">3072</option>
+                </select>
+              </div>
+              <div>
+                <label class="calc-label" for="calc-meta">Metadata per vector</label>
+                <select id="calc-meta" class="calc-select">
+                  <option value="0">0 B</option>
+                  <option value="100" selected>100 B</option>
+                  <option value="500">500 B</option>
+                  <option value="1024">1 KB</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Cloud provider tabs -->
+            <div>
+              <label class="calc-label">Cloud provider</label>
+              <div class="calc-tabs" id="calc-provider-tabs">
+                <button class="calc-tab active" data-provider="aws">AWS</button>
+                <button class="calc-tab" data-provider="gcp">GCP</button>
+                <button class="calc-tab" data-provider="azure">Azure</button>
+                <button class="calc-tab" data-provider="r2">Cloudflare R2</button>
+              </div>
+            </div>
+
+            <!-- Storage class + Region row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div id="calc-storage-class-wrap">
+                <label class="calc-label" for="calc-storage-class">Storage class</label>
+                <select id="calc-storage-class" class="calc-select">
+                  <option value="standard" selected>Standard</option>
+                  <option value="infrequent">Infrequent Access</option>
+                </select>
+              </div>
+              <div>
+                <label class="calc-label" for="calc-region">Region</label>
+                <select id="calc-region" class="calc-select"></select>
+              </div>
+            </div>
+
+            <!-- Instance type + Nodes row -->
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="calc-label" for="calc-instance">Instance type</label>
+                <select id="calc-instance" class="calc-select"></select>
+              </div>
+              <div>
+                <label class="calc-label">Number of nodes</label>
+                <div class="flex items-center gap-1">
+                  <button class="calc-stepper-btn" id="calc-nodes-minus" aria-label="Decrease nodes">&minus;</button>
+                  <input type="number" id="calc-nodes" class="calc-number-input" value="1" min="1" max="10" readonly>
+                  <button class="calc-stepper-btn" id="calc-nodes-plus" aria-label="Increase nodes">+</button>
                 </div>
               </div>
             </div>
           </div>
 
+          <!-- Right: Cost summary (2 cols) -->
+          <div class="md:col-span-2">
+            <div class="fieldset-card h-full flex flex-col justify-center">
+              <span class="fieldset-legend">Monthly cost</span>
+              <div class="pt-2 space-y-3">
+                <div class="calc-cost-row">
+                  <span class="text-sm text-gray-500">Storage (S3)</span>
+                  <span id="calc-cost-storage" class="calc-cost-value">$0</span>
+                </div>
+                <div class="calc-cost-row">
+                  <span class="text-sm text-gray-500">Compute</span>
+                  <span id="calc-cost-compute" class="calc-cost-value">$0</span>
+                </div>
+                <div class="border-t border-black/10 pt-3">
+                  <div class="calc-cost-row">
+                    <span class="text-sm font-semibold text-navy">Total</span>
+                    <span id="calc-cost-total" class="calc-cost-total">$0/mo</span>
+                  </div>
+                </div>
+                <p class="text-[11px] text-gray-400 leading-relaxed mt-2">SQ8 quantization, 20% index overhead, 730 hrs/mo compute</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Part B: Dynamic cost bar chart -->
+        <div class="fieldset-card">
+          <span class="fieldset-legend">Cost comparison</span>
+          <div class="calc-chart-wrap">
+            <canvas id="calc-chart"></canvas>
+          </div>
         </div>
       </div>
     </section>
@@ -507,6 +539,7 @@
           <h4 class="text-sm font-semibold text-navy mb-4">Product</h4>
           <ul class="space-y-2">
             <li><a href="#features" class="text-sm text-gray-500 hover:text-navy transition-colors">Features</a></li>
+            <li><a href="#pricing" class="text-sm text-gray-500 hover:text-navy transition-colors">Pricing</a></li>
             <li><a href="#quickstart" class="text-sm text-gray-500 hover:text-navy transition-colors">Quickstart</a></li>
           </ul>
         </div>
@@ -536,6 +569,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Local scripts -->
   <script src="script.js"></script>

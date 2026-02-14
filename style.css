@@ -670,7 +670,33 @@ nav.sticky {
 }
 
 /* ===========================
-   19. About Section
+   19. Architecture Section
+   =========================== */
+
+.arch-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.arch-list li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.arch-list li:last-child {
+  border-bottom: none;
+}
+
+.arch-list li strong {
+  color: var(--color-text-primary);
+}
+
+/* ===========================
+   20. About Section
    =========================== */
 
 .about-founder-card {

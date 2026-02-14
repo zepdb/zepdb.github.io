@@ -74,6 +74,7 @@
           <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
           <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
           <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
+          <a href="#architecture" class="hover:text-white transition-colors">Architecture</a>
           <a href="#about" class="hover:text-white transition-colors">About</a>
         </div>
 
@@ -103,6 +104,7 @@
           <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
           <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
           <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
+          <a href="#architecture" class="hover:text-white transition-colors">Architecture</a>
           <a href="#about" class="hover:text-white transition-colors">About</a>
           <div class="flex items-center gap-3 mt-2">
             <a href="https://x.com/ghatageanup" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" aria-label="X (Twitter)">
@@ -530,6 +532,75 @@
       </div>
     </section>
 
+    <!-- ========== ARCHITECTURE ========== -->
+    <section id="architecture" class="py-16 md:py-20 border-t border-black/10">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Architecture</h2>
+        <p class="text-sm text-gray-500 mb-8">Stateless nodes. S3 is the single source of truth.</p>
+
+        <!-- Diagram (centered SVG) -->
+        <div class="mb-10">
+          <img src="assets/architecture.svg" alt="Zeppelin architecture diagram" class="mx-auto max-w-full">
+        </div>
+
+        <!-- Row 1: Three fieldset-cards (Write / Read / Compaction) -->
+        <div class="grid md:grid-cols-3 gap-6 mb-6">
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Write Path</span>
+            <ul class="arch-list pt-2">
+              <li>Append-only WAL fragments to S3</li>
+              <li>OCC via S3 ETags on central Manifest</li>
+              <li>Monotonic fencing tokens prevent zombie writers</li>
+              <li>Deterministic sequence numbers (no clock skew)</li>
+            </ul>
+          </div>
+
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Read Path</span>
+            <ul class="arch-list pt-2">
+              <li>Merges fresh WAL data + optimized segments</li>
+              <li>Strong: parallel scan of WAL + indexed segments</li>
+              <li>Eventual: fast-path over segments only</li>
+              <li>Singleflight coalesces concurrent manifest fetches</li>
+            </ul>
+          </div>
+
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Compaction</span>
+            <ul class="arch-list pt-2">
+              <li>IVF-Flat / Hierarchical ANN with k-means + quantization</li>
+              <li>BM25 inverted indexes for full-text search</li>
+              <li>RoaringBitmap indexes for sub-ms attribute filtering</li>
+              <li>Runs in background, never blocks writes</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Row 2: Two fieldset-cards (Benefits / Tradeoffs) -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Benefits</span>
+            <ul class="arch-list pt-2">
+              <li><strong>Instant elasticity</strong> &mdash; stateless nodes, no resharding, 1&rarr;100 in seconds</li>
+              <li><strong>Zero-state recovery</strong> &mdash; no replication lag, Manifest is source of truth</li>
+              <li><strong>Storage economics</strong> &mdash; S3 rates vs. NVMe; scale compute independently</li>
+              <li><strong>Decoupled read/write</strong> &mdash; WAL available immediately; indexing is background</li>
+            </ul>
+          </div>
+
+          <div class="fieldset-card">
+            <span class="fieldset-legend">Tradeoffs</span>
+            <ul class="arch-list pt-2">
+              <li><strong>S3 latency floor</strong> &mdash; baseline 20&ndash;50ms; caching helps but not sub-5ms</li>
+              <li><strong>Consistency lag</strong> &mdash; ManifestCache TTL ~500ms across nodes</li>
+              <li><strong>Compaction health</strong> &mdash; latency degrades if WAL fragments grow unchecked</li>
+              <li><strong>Cold-start</strong> &mdash; first queries populate LRU cache from S3</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ========== ABOUT ========== -->
     <section id="about" class="py-16 md:py-20 border-t border-black/10">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -637,6 +708,7 @@
             <li><a href="#features" class="text-sm text-gray-500 hover:text-navy transition-colors">Features</a></li>
             <li><a href="#pricing" class="text-sm text-gray-500 hover:text-navy transition-colors">Pricing</a></li>
             <li><a href="#quickstart" class="text-sm text-gray-500 hover:text-navy transition-colors">Quickstart</a></li>
+            <li><a href="#architecture" class="text-sm text-gray-500 hover:text-navy transition-colors">Architecture</a></li>
             <li><a href="#about" class="text-sm text-gray-500 hover:text-navy transition-colors">About</a></li>
           </ul>
         </div>

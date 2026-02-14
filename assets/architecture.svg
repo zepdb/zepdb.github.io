@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 30 770 730" width="770" height="730" style="font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555" />
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1971c2" />
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7048e8" />
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fd7e14" />
+    </marker>
+    <marker id="arrow-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c92a2a" />
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="50" y="30" width="770" height="730" fill="white" rx="8"/>
+
+  <!-- Row 1: Client / Agent (ellipse) -->
+  <ellipse cx="430" cy="100" rx="100" ry="42" fill="#e7f5ff" stroke="#1971c2" stroke-width="2"/>
+  <text x="430" y="106" text-anchor="middle" fill="#1971c2" font-size="17" font-weight="600">Client / Agent</text>
+
+  <!-- Arrow: Client -> Zeppelin Node -->
+  <line x1="430" y1="142" x2="430" y2="228" stroke="#1971c2" stroke-width="2" marker-end="url(#arrow-blue)"/>
+  <text x="445" y="192" fill="#1971c2" font-size="13" font-style="italic">write + read</text>
+
+  <!-- Row 2: Zeppelin Node (rectangle) -->
+  <rect x="330" y="230" rx="8" ry="8" width="200" height="72" fill="#d0bfff" stroke="#7048e8" stroke-width="2"/>
+  <text x="430" y="272" text-anchor="middle" fill="#7048e8" font-size="17" font-weight="600">Zeppelin Node</text>
+
+  <!-- Row 2: Manifest Cache (rectangle, right) -->
+  <rect x="620" y="230" rx="8" ry="8" width="175" height="72" fill="#ffe8cc" stroke="#fd7e14" stroke-width="2"/>
+  <text x="707" y="272" text-anchor="middle" fill="#fd7e14" font-size="16" font-weight="600">Manifest Cache</text>
+
+  <!-- Arrow: Zeppelin Node <-> Manifest Cache (bidirectional) -->
+  <line x1="530" y1="262" x2="618" y2="262" stroke="#fd7e14" stroke-width="2" marker-start="url(#arrow-orange)" marker-end="url(#arrow-orange)"/>
+
+  <!-- Arrow: Zeppelin Node -> WAL Fragments (down-left) -->
+  <path d="M 370 302 L 240 440" fill="none" stroke="#7048e8" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="260" y="370" fill="#7048e8" font-size="13" font-style="italic">writes</text>
+
+  <!-- Arrow: Zeppelin Node -> Manifest (down) -->
+  <line x1="430" y1="302" x2="430" y2="440" stroke="#7048e8" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="438" y="380" fill="#7048e8" font-size="13" font-style="italic">OCC via ETags</text>
+
+  <!-- Arrow: Zeppelin Node -> Index Segments (down-right) -->
+  <path d="M 490 302 L 640 440" fill="none" stroke="#7048e8" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="585" y="370" fill="#7048e8" font-size="13" font-style="italic">reads</text>
+
+  <!-- Row 3: S3 Bucket dashed group -->
+  <rect x="100" y="415" rx="8" ry="8" width="660" height="140" fill="none" stroke="#f08c00" stroke-width="2" stroke-dasharray="10,6"/>
+  <text x="120" y="438" fill="#f08c00" font-size="14" font-weight="600">S3 Bucket</text>
+
+  <!-- WAL Fragments -->
+  <rect x="125" y="450" rx="6" ry="6" width="175" height="70" fill="#ffec99" stroke="#f08c00" stroke-width="2"/>
+  <text x="212" y="491" text-anchor="middle" fill="#f08c00" font-size="15" font-weight="600">WAL Fragments</text>
+
+  <!-- Manifest -->
+  <rect x="340" y="450" rx="6" ry="6" width="175" height="70" fill="#ffec99" stroke="#f08c00" stroke-width="2"/>
+  <text x="427" y="491" text-anchor="middle" fill="#f08c00" font-size="15" font-weight="600">Manifest</text>
+
+  <!-- Index Segments -->
+  <rect x="560" y="450" rx="6" ry="6" width="175" height="70" fill="#ffec99" stroke="#f08c00" stroke-width="2"/>
+  <text x="647" y="491" text-anchor="middle" fill="#f08c00" font-size="15" font-weight="600">Index Segments</text>
+
+  <!-- Arrow: WAL Fragments -> Compaction Worker (down) -->
+  <path d="M 260 520 L 380 620" fill="none" stroke="#c92a2a" stroke-width="2" marker-end="url(#arrow-red)"/>
+
+  <!-- Arrow: Compaction Worker -> Index Segments (up-right) -->
+  <path d="M 500 625 L 640 522" fill="none" stroke="#c92a2a" stroke-width="2" marker-end="url(#arrow-red)"/>
+  <text x="575" y="590" fill="#c92a2a" font-size="13" font-style="italic">builds indexes</text>
+
+  <!-- Row 4: Compaction Worker -->
+  <rect x="320" y="620" rx="8" ry="8" width="220" height="72" fill="#ffa8a8" stroke="#c92a2a" stroke-width="2"/>
+  <text x="430" y="662" text-anchor="middle" fill="#c92a2a" font-size="17" font-weight="600">Compaction Worker</text>
+</svg>

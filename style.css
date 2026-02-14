@@ -668,3 +668,32 @@ nav.sticky {
     font-size: 11px;
   }
 }
+
+/* ===========================
+   19. About Section
+   =========================== */
+
+.about-founder-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 28px 24px;
+  background: var(--color-surface);
+}
+
+.about-credentials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.about-credentials li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.about-credentials li:last-child {
+  border-bottom: none;
+}

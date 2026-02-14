@@ -692,6 +692,7 @@ nav.sticky {
   color: var(--color-text-secondary);
   padding: 5px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  white-space: nowrap;
 }
 
 .about-credentials li:last-child {

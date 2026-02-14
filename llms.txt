@@ -1,4 +1,4 @@
-# Zeppelin — S3-Native Vector Search Engine
+# Zeppelin: S3-Native Vector Search Engine
 
 > Zeppelin is an open-source (Apache-2.0), stateless vector search engine that uses
 > S3-compatible object storage as the source of truth. It supports vector similarity
@@ -34,9 +34,9 @@ The server listens on port 3000 by default. All endpoints are under `/v1/`.
 The four-step flow to use Zeppelin:
 
 1. **Start** the server (docker run or binary)
-2. **Create a namespace** — defines dimensions, metric, and optional FTS fields
-3. **Upsert vectors** — send vectors with IDs and optional attributes
-4. **Query** — vector similarity search, BM25 full-text search, or both with filters
+2. **Create a namespace** - defines dimensions, metric, and optional FTS fields
+3. **Upsert vectors** - send vectors with IDs and optional attributes
+4. **Query** - vector similarity search, BM25 full-text search, or both with filters
 
 ---
 
@@ -286,9 +286,9 @@ Content-Type: application/json
 ```
 
 This single endpoint supports three query modes:
-- **Vector search** — provide `vector` for similarity search
-- **BM25 full-text search** — provide `rank_by` for keyword search
-- **Hybrid** — combine both in a single request
+- **Vector search** - provide `vector` for similarity search
+- **BM25 full-text search** - provide `rank_by` for keyword search
+- **Hybrid** - combine both in a single request
 
 #### Vector Search
 

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zeppelin -- S3-Native Vector Search</title>
+  <title>Zeppelin | S3-Native Vector Search</title>
   <meta name="description" content="S3-native vector search engine. Object storage is the source of truth. Nodes are stateless. Fully open source under Apache-2.0.">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Zeppelin -- S3-Native Vector Search">
+  <meta property="og:title" content="Zeppelin | S3-Native Vector Search">
   <meta property="og:description" content="Vector search at storage prices. S3 is the source of truth. Nodes are stateless. Fully open source.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://zepdb.io">
@@ -15,7 +15,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Zeppelin -- S3-Native Vector Search">
+  <meta name="twitter:title" content="Zeppelin | S3-Native Vector Search">
   <meta name="twitter:description" content="Vector search at storage prices. S3 is the source of truth. Nodes are stateless. Fully open source.">
 
   <!-- LLM / AI Agent discovery -->
@@ -581,20 +581,20 @@
           <div class="fieldset-card">
             <span class="fieldset-legend">Benefits</span>
             <ul class="arch-list pt-2">
-              <li><strong>Instant elasticity</strong> &mdash; stateless nodes, no resharding, 1&rarr;100 in seconds</li>
-              <li><strong>Zero-state recovery</strong> &mdash; no replication lag, Manifest is source of truth</li>
-              <li><strong>Storage economics</strong> &mdash; S3 rates vs. NVMe; scale compute independently</li>
-              <li><strong>Decoupled read/write</strong> &mdash; WAL available immediately; indexing is background</li>
+              <li><strong>Instant elasticity:</strong> stateless nodes, no resharding, 1&rarr;100 in seconds</li>
+              <li><strong>Zero-state recovery:</strong> no replication lag, Manifest is source of truth</li>
+              <li><strong>Storage economics:</strong> S3 rates vs. NVMe; scale compute independently</li>
+              <li><strong>Decoupled read/write:</strong> WAL available immediately; indexing is background</li>
             </ul>
           </div>
 
           <div class="fieldset-card">
             <span class="fieldset-legend">Tradeoffs</span>
             <ul class="arch-list pt-2">
-              <li><strong>S3 latency floor</strong> &mdash; baseline 20&ndash;50ms; caching helps but not sub-5ms</li>
-              <li><strong>Consistency lag</strong> &mdash; ManifestCache TTL ~500ms across nodes</li>
-              <li><strong>Compaction health</strong> &mdash; latency degrades if WAL fragments grow unchecked</li>
-              <li><strong>Cold-start</strong> &mdash; first queries populate LRU cache from S3</li>
+              <li><strong>S3 latency floor:</strong> baseline 20-50ms; caching helps but not sub-5ms</li>
+              <li><strong>Consistency lag:</strong> ManifestCache TTL ~500ms across nodes</li>
+              <li><strong>Compaction health:</strong> latency degrades if WAL fragments grow unchecked</li>
+              <li><strong>Cold-start:</strong> first queries populate LRU cache from S3</li>
             </ul>
           </div>
         </div>
@@ -642,19 +642,19 @@
           <!-- Right: Narrative (4 cols) -->
           <div class="md:col-span-4 space-y-5 text-[15px] leading-relaxed text-gray-600">
             <p class="text-lg font-medium text-navy leading-snug">
-              Your vectors belong in <em>your</em> object storage &mdash; not someone else&rsquo;s proprietary system. Search should cost what storage costs.
+              Your vectors belong in <em>your</em> object storage, not someone else's proprietary system. Search should cost what storage costs.
             </p>
 
             <p>
-              I&rsquo;ve spent 14 years inside distributed storage systems &mdash; from Sybase ASE internals in C/C++, through Cisco WebEx and SAP HANA, to building Hyperforce at Salesforce. All of that experience kept pointing to the same insight.
+              I've spent 14 years inside distributed storage systems: Sybase ASE internals in C/C++, Cisco WebEx, SAP HANA, then building Hyperforce at Salesforce. One lesson kept coming back.
             </p>
 
             <p>
-              In an agent-first future, agents won&rsquo;t care about latency the way web apps do. They&rsquo;ll care about <strong>cost</strong> and <strong>simplicity</strong>. If your vectors live in S3, you pay S3 prices. Nodes become stateless. You scale by adding buckets, not by babysitting clusters.
+              In an agent-first future, agents won't care about latency the way web apps do. They'll care about <strong>cost</strong> and <strong>simplicity</strong>. If your vectors live in S3, you pay S3 prices. Nodes become stateless. You scale by adding buckets, not by babysitting clusters.
             </p>
 
             <p>
-              On February 10th, 2026, I started building Zeppelin at the Claude Code Hackathon. The seed fund was $500 in Claude credits. I directed the architecture &mdash; every line of Rust was written by Claude Opus 4.6. One human, one AI, no team, no investors.
+              On February 10th, 2026, I started building Zeppelin at the Claude Code Hackathon. The seed fund was $500 in Claude credits. I directed the architecture. Every line of Rust was written by Claude Opus 4.6. One human, one AI, no team, no investors.
             </p>
 
             <p>
@@ -662,11 +662,11 @@
             </p>
 
             <p>
-              Zeppelin is open source because infrastructure should be. No vendor lock-in, no opaque pricing, no proprietary formats. Just your data, your buckets, your control.
+              Zeppelin is open source because infrastructure should be. No vendor lock-in, no opaque pricing, no proprietary formats. Your data stays in your buckets.
             </p>
 
             <p class="text-sm text-gray-400 italic pt-2">
-              The future of search isn&rsquo;t faster clusters &mdash; it&rsquo;s smarter architecture.
+              Smarter architecture beats faster clusters.
             </p>
           </div>
 

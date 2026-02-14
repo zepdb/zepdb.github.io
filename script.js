@@ -263,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 'ap-northeast-1', label: 'Asia Pacific (Tokyo)', standard: 0.025, infrequent: 0.0138 }
       ],
       instances: [
+        { id: 't2.micro', label: 't2.micro Free Tier (1 vCPU, 1 GB)', hourly: 0 },
         { id: 't3.medium', label: 't3.medium (2 vCPU, 4 GB)', hourly: 0.0416 },
         { id: 't3.large', label: 't3.large (2 vCPU, 8 GB)', hourly: 0.0832 },
         { id: 't3.xlarge', label: 't3.xlarge (4 vCPU, 16 GB)', hourly: 0.1664 },
@@ -285,6 +286,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 'asia-northeast1', label: 'Tokyo (asia-northeast1)', standard: 0.023, infrequent: 0.013 }
       ],
       instances: [
+        { id: 'e2-micro', label: 'e2-micro Free Tier (0.25 vCPU, 1 GB)', hourly: 0 },
         { id: 'e2-medium', label: 'e2-medium (2 vCPU, 4 GB)', hourly: 0.0335 },
         { id: 'e2-standard-2', label: 'e2-standard-2 (2 vCPU, 8 GB)', hourly: 0.0670 },
         { id: 'e2-standard-4', label: 'e2-standard-4 (4 vCPU, 16 GB)', hourly: 0.1340 },
@@ -306,6 +308,7 @@ document.addEventListener('DOMContentLoaded', function () {
         { id: 'japaneast', label: 'Japan East', standard: 0.025, infrequent: 0.014 }
       ],
       instances: [
+        { id: 'B1s', label: 'B1s Free Tier (1 vCPU, 1 GB)', hourly: 0 },
         { id: 'B2s', label: 'B2s (2 vCPU, 4 GB)', hourly: 0.0416 },
         { id: 'B2ms', label: 'B2ms (2 vCPU, 8 GB)', hourly: 0.0832 },
         { id: 'D2s_v5', label: 'D2s v5 (2 vCPU, 8 GB)', hourly: 0.096 },

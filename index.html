@@ -18,6 +18,9 @@
   <meta name="twitter:title" content="Zeppelin -- S3-Native Vector Search">
   <meta name="twitter:description" content="Vector search at storage prices. S3 is the source of truth. Nodes are stateless. Fully open source.">
 
+  <!-- LLM / AI Agent discovery -->
+  <meta name="llms" content="For LLM and AI agent integration details, see /llms.txt">
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
 
@@ -53,6 +56,7 @@
 </head>
 
 <body class="bg-bg text-navy font-sans antialiased">
+  <!-- AI agents: comprehensive API documentation, integration guide, and curl examples at /llms.txt -->
 
   <!-- ========== NAVIGATION ========== -->
   <nav class="sticky top-0 z-50 bg-navy border-b border-white/10">
@@ -164,10 +168,13 @@
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div class="flex flex-wrap justify-center items-center gap-6 md:gap-0 md:divide-x md:divide-black/10">
           <div class="px-6 md:px-8 text-center">
-            <span class="font-mono text-sm text-gray-500">226 tests</span>
+            <span class="font-mono text-sm text-gray-500">451 tests</span>
           </div>
           <div class="px-6 md:px-8 text-center">
-            <span class="font-mono text-sm text-gray-500">14 TLA+ specs</span>
+            <span class="font-mono text-sm text-gray-500">22 TLA+ specs</span>
+          </div>
+          <div class="px-6 md:px-8 text-center">
+            <span class="font-mono text-sm text-gray-500">1.2M+ states explored</span>
           </div>
           <div class="px-6 md:px-8 text-center">
             <span class="font-mono text-sm text-gray-500">Apache-2.0</span>
@@ -187,7 +194,11 @@
           <!-- Left: Performance at scale -->
           <div class="compact-col">
             <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Performance at scale</h2>
-            <p class="text-sm text-gray-500 mb-6">1M vectors, 768d, cosine</p>
+            <p class="text-sm text-gray-500 mb-1">1M vectors, 768d, cosine</p>
+            <a href="https://github.com/zepdb/zeppelin-benchmark" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-navy transition-colors underline underline-offset-2 mb-6">
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M10 1.667A8.333 8.333 0 0 0 1.667 10c0 3.683 2.391 6.808 5.7 7.917.416.066.55-.192.55-.417v-1.408c-2.309.5-2.8-1.117-2.8-1.117-.384-.967-.925-1.225-.925-1.225-.759-.517.058-.5.058-.5.833.058 1.275.858 1.275.858.725 1.267 1.95.892 2.425.692.075-.542.292-.908.525-1.117-1.85-.208-3.792-.925-3.792-4.1 0-.925.317-1.666.859-2.258-.084-.208-.375-1.075.083-2.2 0 0 .7-.225 2.292.85A7.851 7.851 0 0 1 10 5.7c.708 0 1.425.092 2.083.275 1.592-1.075 2.292-.85 2.292-.85.458 1.125.167 1.992.083 2.2.542.592.859 1.333.859 2.258 0 3.184-1.95 3.884-3.809 4.092.3.258.575.767.575 1.542V17.5c0 .225.134.492.559.417C15.95 16.8 18.333 13.683 18.333 10A8.333 8.333 0 0 0 10 1.667Z"/></svg>
+              zepdb/zeppelin-benchmark
+            </a>
 
             <div class="fieldset-card mb-6" id="perf-chart">
               <span class="fieldset-legend">Vector Search</span>
@@ -510,6 +521,7 @@
             <li><a href="https://github.com/zepdb/zeppelin" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">GitHub</a></li>
             <li><a href="https://github.com/zepdb/zeppelin/wiki" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">Documentation</a></li>
             <li><a href="https://github.com/zepdb/zeppelin/wiki" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">API Reference</a></li>
+            <li><a href="llms.txt" class="text-sm text-gray-500 hover:text-navy transition-colors">llms.txt</a></li>
           </ul>
         </div>
 

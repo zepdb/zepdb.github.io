@@ -1,0 +1,632 @@
+# Zeppelin — S3-Native Vector Search Engine
+
+> Zeppelin is an open-source (Apache-2.0), stateless vector search engine that uses
+> S3-compatible object storage as the source of truth. It supports vector similarity
+> search, BM25 full-text search, bitmap attribute filters, and tunable consistency.
+> Written in Rust. Single binary. No external dependencies beyond S3.
+
+Repository: https://github.com/zepdb/zeppelin
+Documentation: https://github.com/zepdb/zeppelin/wiki
+Python SDK: https://github.com/zepdb/zeppelin-python
+TypeScript SDK: https://github.com/zepdb/zeppelin-typescript
+
+---
+
+## Quick Start
+
+Start Zeppelin with Docker:
+
+```
+docker run -p 3000:3000 \
+  -e AWS_ACCESS_KEY_ID=your-key \
+  -e AWS_SECRET_ACCESS_KEY=your-secret \
+  -e ZEPPELIN_BUCKET=your-bucket \
+  -e ZEPPELIN_REGION=us-east-1 \
+  ghcr.io/zepdb/zeppelin:latest
+```
+
+The server listens on port 3000 by default. All endpoints are under `/v1/`.
+
+---
+
+## Core Workflow
+
+The four-step flow to use Zeppelin:
+
+1. **Start** the server (docker run or binary)
+2. **Create a namespace** — defines dimensions, metric, and optional FTS fields
+3. **Upsert vectors** — send vectors with IDs and optional attributes
+4. **Query** — vector similarity search, BM25 full-text search, or both with filters
+
+---
+
+## API Reference
+
+Base URL: `http://localhost:3000`
+
+### Health Check
+
+```
+GET /healthz
+```
+
+Response: `200 OK` with body `"ok"`
+
+---
+
+### Namespaces
+
+A namespace is an isolated collection of vectors. The namespace name you choose in
+the create call becomes the `:ns` path parameter for all subsequent operations.
+
+#### Create Namespace
+
+```
+POST /v1/namespaces/:ns
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "dimensions": 768,
+  "metric": "cosine",
+  "fts_fields": {
+    "title": {
+      "language": "English",
+      "stemming": true,
+      "remove_stopwords": true,
+      "case_sensitive": false,
+      "bm25_k1": 1.2,
+      "bm25_b": 0.75
+    },
+    "body": {
+      "language": "English",
+      "stemming": true,
+      "remove_stopwords": true,
+      "case_sensitive": false
+    }
+  }
+}
+```
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| dimensions | integer | yes | Vector dimensionality (e.g. 768, 1536, 3072) |
+| metric | string | yes | Distance metric: `"cosine"`, `"euclidean"`, or `"dot_product"` |
+| fts_fields | object | no | Map of attribute field names to FTS configuration (enables BM25 search) |
+
+Response: `200 OK`
+
+```json
+{
+  "name": "my-namespace",
+  "dimensions": 768,
+  "metric": "cosine",
+  "vector_count": 0
+}
+```
+
+Example:
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace \
+  -H "Content-Type: application/json" \
+  -d '{
+    "dimensions": 768,
+    "metric": "cosine"
+  }'
+```
+
+#### List Namespaces
+
+```
+GET /v1/namespaces
+```
+
+Response: `200 OK`
+
+```json
+{
+  "namespaces": [
+    {
+      "name": "my-namespace",
+      "dimensions": 768,
+      "metric": "cosine",
+      "vector_count": 1000
+    }
+  ]
+}
+```
+
+Example:
+
+```bash
+curl http://localhost:3000/v1/namespaces
+```
+
+#### Get Namespace
+
+```
+GET /v1/namespaces/:ns
+```
+
+Response: `200 OK`
+
+```json
+{
+  "name": "my-namespace",
+  "dimensions": 768,
+  "metric": "cosine",
+  "vector_count": 1000
+}
+```
+
+Example:
+
+```bash
+curl http://localhost:3000/v1/namespaces/my-namespace
+```
+
+#### Delete Namespace
+
+```
+DELETE /v1/namespaces/:ns
+```
+
+Response: `200 OK`
+
+Permanently deletes the namespace and all its vectors from S3.
+
+Example:
+
+```bash
+curl -X DELETE http://localhost:3000/v1/namespaces/my-namespace
+```
+
+---
+
+### Vectors
+
+#### Upsert Vectors
+
+```
+POST /v1/namespaces/:ns/vectors
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "vectors": [
+    {
+      "id": "vec-1",
+      "values": [0.1, 0.2, 0.3, "...768 floats total"],
+      "attributes": {
+        "category": "science",
+        "year": 2024,
+        "tags": ["ml", "search"],
+        "title": "Introduction to Vector Search",
+        "body": "Vector search enables semantic similarity..."
+      }
+    },
+    {
+      "id": "vec-2",
+      "values": [0.4, 0.5, 0.6, "..."],
+      "attributes": {
+        "category": "engineering",
+        "year": 2023
+      }
+    }
+  ]
+}
+```
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| vectors | array | yes | Array of vector objects to upsert |
+| vectors[].id | string | yes | Unique identifier. Must match `^[a-zA-Z0-9_-]+$` (alphanumeric, hyphens, underscores) |
+| vectors[].values | array of floats | yes | Vector embedding. Length must match namespace dimensions |
+| vectors[].attributes | object | no | Arbitrary key-value metadata. Values can be strings, numbers, booleans, or arrays of strings/numbers. Attributes with names matching FTS fields are indexed for full-text search |
+
+Response: `200 OK`
+
+If an ID already exists, the vector and its attributes are replaced (upsert semantics).
+
+Example:
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace/vectors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vectors": [
+      {
+        "id": "vec-1",
+        "values": [0.1, 0.2, 0.3],
+        "attributes": {"category": "science", "year": 2024}
+      }
+    ]
+  }'
+```
+
+#### Delete Vectors
+
+```
+POST /v1/namespaces/:ns/vectors/delete
+Content-Type: application/json
+```
+
+Request body:
+
+```json
+{
+  "ids": ["vec-1", "vec-2"]
+}
+```
+
+Response: `200 OK`
+
+Example:
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace/vectors/delete \
+  -H "Content-Type: application/json" \
+  -d '{"ids": ["vec-1", "vec-2"]}'
+```
+
+---
+
+### Query
+
+```
+POST /v1/namespaces/:ns/query
+Content-Type: application/json
+```
+
+This single endpoint supports three query modes:
+- **Vector search** — provide `vector` for similarity search
+- **BM25 full-text search** — provide `rank_by` for keyword search
+- **Hybrid** — combine both in a single request
+
+#### Vector Search
+
+```json
+{
+  "vector": [0.1, 0.2, 0.3, "..."],
+  "top_k": 10,
+  "filters": { "...see Filters section below..." },
+  "include_attributes": true,
+  "include_vectors": false,
+  "consistency": "strong",
+  "nprobe": 4
+}
+```
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| vector | array of floats | no | Query vector. Length must match namespace dimensions |
+| top_k | integer | no | Number of results to return (default: 10) |
+| filters | object | no | Attribute filter expression (see Filters section) |
+| include_attributes | boolean | no | Include attributes in results (default: false) |
+| include_vectors | boolean | no | Include vector values in results (default: false) |
+| consistency | string | no | `"strong"` or `"eventual"` (default: `"eventual"`). Strong reads from S3; eventual reads from cache |
+| nprobe | integer | no | Number of IVF partitions to probe (default: server config). Higher = more accurate but slower |
+
+Response:
+
+```json
+{
+  "results": [
+    {
+      "id": "vec-42",
+      "score": 0.95,
+      "attributes": {
+        "category": "science",
+        "year": 2024
+      }
+    },
+    {
+      "id": "vec-17",
+      "score": 0.89,
+      "attributes": {
+        "category": "engineering",
+        "year": 2023
+      }
+    }
+  ]
+}
+```
+
+Example:
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace/query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [0.1, 0.2, 0.3],
+    "top_k": 5,
+    "include_attributes": true
+  }'
+```
+
+#### BM25 Full-Text Search
+
+To use BM25 search, the namespace must have been created with `fts_fields` configured
+for the attribute fields you want to search.
+
+```json
+{
+  "rank_by": "(bm25 title \"vector search\")",
+  "top_k": 10,
+  "include_attributes": true
+}
+```
+
+The `rank_by` field uses S-expression syntax:
+
+| Expression | Description | Example |
+|---|---|---|
+| `(bm25 FIELD "query")` | BM25 score on a single field | `(bm25 title "vector search")` |
+| `(+ expr1 expr2)` | Sum of two rank expressions | `(+ (bm25 title "search") (bm25 body "search"))` |
+| `(* weight expr)` | Weighted rank expression | `(* 2.0 (bm25 title "search"))` |
+
+Multi-field weighted search example:
+
+```json
+{
+  "rank_by": "(+ (* 2.0 (bm25 title \"vector search\")) (bm25 body \"vector search\"))",
+  "top_k": 10,
+  "include_attributes": true
+}
+```
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| rank_by | string | no | BM25 S-expression for full-text ranking |
+| last_as_prefix | boolean | no | Treat the last token in the query as a prefix match (for autocomplete/typeahead). Default: false |
+
+Example with prefix matching (autocomplete):
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace/query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "rank_by": "(bm25 title \"vec\")",
+    "last_as_prefix": true,
+    "top_k": 5,
+    "include_attributes": true
+  }'
+```
+
+#### Hybrid Search (Vector + BM25)
+
+Combine vector similarity with BM25 by providing both `vector` and `rank_by`:
+
+```json
+{
+  "vector": [0.1, 0.2, 0.3, "..."],
+  "rank_by": "(bm25 title \"search query\")",
+  "top_k": 10,
+  "include_attributes": true
+}
+```
+
+---
+
+## Filters
+
+Filters narrow results by attribute values. They are applied as pre-filters using
+RoaringBitmap indexes for sub-millisecond performance.
+
+### Comparison Operators
+
+```json
+{"op": "Eq", "field": "category", "value": "science"}
+{"op": "NotEq", "field": "category", "value": "sports"}
+{"op": "Gt", "field": "year", "value": 2020}
+{"op": "Gte", "field": "year", "value": 2020}
+{"op": "Lt", "field": "year", "value": 2025}
+{"op": "Lte", "field": "year", "value": 2025}
+```
+
+### Set Operators
+
+```json
+{"op": "In", "field": "category", "value": ["science", "engineering"]}
+{"op": "NotIn", "field": "category", "value": ["sports", "entertainment"]}
+```
+
+### Token/Text Operators
+
+```json
+{"op": "Contains", "field": "tags", "value": "ml"}
+{"op": "ContainsAllTokens", "field": "title", "value": "vector search"}
+{"op": "ContainsTokenSequence", "field": "title", "value": "vector search engine"}
+```
+
+| Operator | Description |
+|---|---|
+| Eq | Equals |
+| NotEq | Not equals |
+| Gt | Greater than |
+| Gte | Greater than or equal |
+| Lt | Less than |
+| Lte | Less than or equal |
+| In | Value is in the given list |
+| NotIn | Value is not in the given list |
+| Contains | Attribute (string or array) contains the value |
+| ContainsAllTokens | Text field contains all whitespace-separated tokens (any order) |
+| ContainsTokenSequence | Text field contains the exact token sequence |
+
+### Logical Composition
+
+Combine filters with And, Or, Not:
+
+```json
+{
+  "op": "And",
+  "conditions": [
+    {"op": "Eq", "field": "category", "value": "science"},
+    {"op": "Gte", "field": "year", "value": 2020},
+    {
+      "op": "Or",
+      "conditions": [
+        {"op": "Contains", "field": "tags", "value": "ml"},
+        {"op": "Contains", "field": "tags", "value": "ai"}
+      ]
+    }
+  ]
+}
+```
+
+```json
+{
+  "op": "Not",
+  "conditions": [
+    {"op": "Eq", "field": "status", "value": "archived"}
+  ]
+}
+```
+
+### Complete Filtered Query Example
+
+```bash
+curl -X POST http://localhost:3000/v1/namespaces/my-namespace/query \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [0.1, 0.2, 0.3],
+    "top_k": 10,
+    "filters": {
+      "op": "And",
+      "conditions": [
+        {"op": "Eq", "field": "category", "value": "science"},
+        {"op": "Gte", "field": "year", "value": 2020}
+      ]
+    },
+    "include_attributes": true
+  }'
+```
+
+---
+
+## FTS Field Configuration
+
+When creating a namespace, you can configure full-text search on specific attribute
+fields. Each field has its own tokenization and BM25 tuning parameters.
+
+```json
+{
+  "dimensions": 768,
+  "metric": "cosine",
+  "fts_fields": {
+    "title": {
+      "language": "English",
+      "stemming": true,
+      "remove_stopwords": true,
+      "case_sensitive": false,
+      "bm25_k1": 1.2,
+      "bm25_b": 0.75
+    }
+  }
+}
+```
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| language | string | "English" | Tokenizer language. Determines stemming rules and stopword list |
+| stemming | boolean | true | Reduce words to stems (e.g. "running" -> "run") |
+| remove_stopwords | boolean | true | Remove common words ("the", "is", "at", etc.) |
+| case_sensitive | boolean | false | Whether token matching is case-sensitive |
+| bm25_k1 | float | 1.2 | BM25 term frequency saturation. Higher values give more weight to term frequency |
+| bm25_b | float | 0.75 | BM25 length normalization. 0 = no length penalty, 1 = full length normalization |
+
+---
+
+## Environment Variables
+
+| Variable | Default | Description |
+|---|---|---|
+| ZEPPELIN_HOST | 0.0.0.0 | Bind address |
+| ZEPPELIN_PORT | 3000 | HTTP listen port |
+| ZEPPELIN_BUCKET | (required) | S3 bucket name for data storage |
+| ZEPPELIN_REGION | us-east-1 | AWS region |
+| ZEPPELIN_ENDPOINT | (none) | Custom S3 endpoint URL (for MinIO, R2, etc.) |
+| ZEPPELIN_WAL_FLUSH_INTERVAL_MS | 1000 | WAL flush interval in milliseconds |
+| ZEPPELIN_COMPACTION_INTERVAL_SECS | 300 | Compaction check interval in seconds |
+| ZEPPELIN_MAX_SEGMENT_SIZE | 50000 | Max vectors per segment before compaction |
+| ZEPPELIN_NPROBE | 4 | Default number of IVF partitions to probe during search |
+| ZEPPELIN_CACHE_TTL_SECS | 60 | Cache time-to-live in seconds |
+| ZEPPELIN_LOG_LEVEL | info | Log level: trace, debug, info, warn, error |
+| AWS_ACCESS_KEY_ID | (required) | AWS/S3 access key |
+| AWS_SECRET_ACCESS_KEY | (required) | AWS/S3 secret key |
+
+### Using with S3-Compatible Storage
+
+For MinIO, Cloudflare R2, or other S3-compatible storage, set `ZEPPELIN_ENDPOINT`:
+
+```
+docker run -p 3000:3000 \
+  -e AWS_ACCESS_KEY_ID=minioadmin \
+  -e AWS_SECRET_ACCESS_KEY=minioadmin \
+  -e ZEPPELIN_BUCKET=vectors \
+  -e ZEPPELIN_ENDPOINT=http://minio:9000 \
+  ghcr.io/zepdb/zeppelin:latest
+```
+
+---
+
+## Client SDKs
+
+### Python
+
+```
+pip install zeppelin-python
+```
+
+```python
+from zeppelin import ZeppelinClient
+
+client = ZeppelinClient("http://localhost:3000")
+
+# Create namespace
+client.create_namespace("my-namespace", dimensions=768, metric="cosine")
+
+# Upsert
+client.upsert("my-namespace", vectors=[
+    {"id": "vec-1", "values": [0.1, 0.2, ...], "attributes": {"category": "science"}}
+])
+
+# Query
+results = client.query("my-namespace", vector=[0.1, 0.2, ...], top_k=10)
+```
+
+GitHub: https://github.com/zepdb/zeppelin-python
+
+### TypeScript
+
+```
+npm install zeppelin-typescript
+```
+
+```typescript
+import { ZeppelinClient } from "zeppelin-typescript";
+
+const client = new ZeppelinClient("http://localhost:3000");
+
+// Create namespace
+await client.createNamespace("my-namespace", { dimensions: 768, metric: "cosine" });
+
+// Upsert
+await client.upsert("my-namespace", {
+  vectors: [
+    { id: "vec-1", values: [0.1, 0.2, ...], attributes: { category: "science" } }
+  ]
+});
+
+// Query
+const results = await client.query("my-namespace", { vector: [0.1, 0.2, ...], topK: 10 });
+```
+
+GitHub: https://github.com/zepdb/zeppelin-typescript

@@ -335,10 +335,10 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 
   var COMPETITORS = {
-    'Weaviate':      { '1e6': 25,  '1e7': 250,  '1e8': 2500 },
-    'TurboPuffer':   { '1e6': 64,  '1e7': 100,  '1e8': 600 },
-    'Qdrant Cloud':  { '1e6': 65,  '1e7': 500,  '1e8': 5000 },
-    'Pinecone':      { '1e6': 70,  '1e7': 700,  '1e8': 7000 }
+    'Weaviate':      { '1e6': 98,   '1e7': 755,   '1e8': 7321 },
+    'TurboPuffer':   { '1e6': 64,   '1e7': 256,   '1e8': 1000 },
+    'Qdrant Cloud':  { '1e6': 100,  '1e7': 400,   '1e8': 4000 },
+    'Pinecone':      { '1e6': 70,   '1e7': 170,   '1e8': 1700 }
   };
 
   var HOURS_PER_MONTH = 730;

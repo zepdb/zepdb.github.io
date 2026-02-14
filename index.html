@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zeppelin -- S3-Native Vector Search</title>
+  <meta name="description" content="S3-native vector search engine. Object storage is the source of truth. Nodes are stateless. Fully open source under Apache-2.0.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Zeppelin -- S3-Native Vector Search">
+  <meta property="og:description" content="Vector search at storage prices. S3 is the source of truth. Nodes are stateless. Fully open source.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://zepdb.io">
+  <meta property="og:image" content="assets/icon.svg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Zeppelin -- S3-Native Vector Search">
+  <meta name="twitter:description" content="Vector search at storage prices. S3 is the source of truth. Nodes are stateless. Fully open source.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS v3 CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            accent: '#e8590c',
+            surface: '#f8f8f8',
+            bg: '#ffffff',
+            navy: '#1a1a2e',
+            codebg: '#1e1e2e',
+          },
+        },
+      },
+    }
+  </script>
+
+  <!-- Local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-bg text-navy font-sans antialiased">
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="sticky top-0 z-50 bg-navy border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Left: Logo + Name -->
+        <a href="#" class="flex items-center gap-3 shrink-0">
+          <img src="assets/icon.svg" alt="Zeppelin logo" class="h-16 w-16">
+          <span class="text-2xl font-semibold tracking-tight text-white">Zeppelin</span>
+        </a>
+
+        <!-- Center: Links (hidden on mobile) -->
+        <div class="hidden md:flex items-center gap-8 text-sm text-gray-300">
+          <a href="#features" class="hover:text-white transition-colors">Features</a>
+          <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
+          <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
+        </div>
+
+        <!-- Right: CTAs -->
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="#" class="btn-nav-ghost">Talk to us</a>
+          <a href="#quickstart" class="btn-nav-primary">Get Started</a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-400 hover:text-white" aria-label="Open menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile menu (hidden by default) -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t border-white/10 mt-2 pt-4">
+        <div class="flex flex-col gap-3 text-sm text-gray-300">
+          <a href="#features" class="hover:text-white transition-colors">Features</a>
+          <a href="https://github.com/zepdb/zeppelin/wiki" class="hover:text-white transition-colors" target="_blank" rel="noopener">Docs</a>
+          <a href="https://github.com/zepdb/zeppelin" class="hover:text-white transition-colors" target="_blank" rel="noopener">GitHub</a>
+          <div class="flex gap-3 mt-2">
+            <a href="#" class="btn-nav-ghost">Talk to us</a>
+            <a href="#quickstart" class="btn-nav-primary">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="relative overflow-hidden bg-bg">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
+        <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+          <!-- Left: Text -->
+          <div class="pt-4">
+            <h1 class="font-mono font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-tight text-navy">
+              Vector search at <span class="text-accent">storage prices</span>
+            </h1>
+            <p class="mt-6 text-lg text-gray-500 leading-relaxed max-w-lg">
+              S3 is the source of truth. Nodes are stateless. Fully open source.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <a href="#quickstart" class="btn-primary">Get Started</a>
+              <a href="https://github.com/zepdb/zeppelin" target="_blank" rel="noopener" class="btn-secondary">
+                View on GitHub
+              </a>
+            </div>
+          </div>
+
+          <!-- Right: Features Grid -->
+          <div id="features" class="grid grid-cols-2 gap-3">
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Storage</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">S3-Native Storage</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">Object storage is the source of truth. Scales to petabytes.</p>
+            </div>
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Search</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">Vector Search</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">IVF-Flat with SQ8, Product Quantization, and hierarchical ANN.</p>
+            </div>
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Full-Text</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">BM25 Full-Text</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">Inverted indexes with tokenization, stemming, and hybrid ranking.</p>
+            </div>
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Filters</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">Bitmap Pre-Filters</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">RoaringBitmap indexes for sub-ms attribute filtering.</p>
+            </div>
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Consistency</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">Tunable Consistency</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">Strong or eventual reads. Choose per query.</p>
+            </div>
+            <div class="feature-card bg-white rounded-lg border border-black/10 p-4">
+              <div class="text-[10px] font-mono font-medium text-accent uppercase tracking-wider mb-2">Verification</div>
+              <h3 class="text-sm font-semibold text-navy mb-1">Formally Verified</h3>
+              <p class="text-xs text-gray-500 leading-relaxed">14 TLA+ specs prove WAL, compaction, and CAS correctness.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="stats-bar">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-wrap justify-center items-center gap-6 md:gap-0 md:divide-x md:divide-black/10">
+          <div class="px-6 md:px-8 text-center">
+            <span class="font-mono text-sm text-gray-500">226 tests</span>
+          </div>
+          <div class="px-6 md:px-8 text-center">
+            <span class="font-mono text-sm text-gray-500">14 TLA+ specs</span>
+          </div>
+          <div class="px-6 md:px-8 text-center">
+            <span class="font-mono text-sm text-gray-500">Apache-2.0</span>
+          </div>
+          <div class="px-6 md:px-8 text-center">
+            <span class="font-mono text-sm text-gray-500">2M+ vectors benchmarked</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ROW 1: PERFORMANCE + COST COMPARISON ========== -->
+    <section class="py-16 md:py-20 border-t border-black/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+
+          <!-- Left: Performance at scale -->
+          <div class="compact-col">
+            <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Performance at scale</h2>
+            <p class="text-sm text-gray-500 mb-6">1M vectors, 768d, cosine</p>
+
+            <div class="fieldset-card mb-6" id="perf-chart">
+              <span class="fieldset-legend">Vector Search</span>
+              <div class="pt-2">
+                <div class="perf-group">
+                  <div class="perf-group-label">Warm p50</div>
+                  <div class="perf-row">
+                    <div class="perf-label">Zeppelin</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--zeppelin" data-width="45"></div>
+                    </div>
+                    <div class="perf-value">~45ms</div>
+                  </div>
+                  <div class="perf-row">
+                    <div class="perf-label">Turbopuffer</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--competitor" data-width="8"></div>
+                    </div>
+                    <div class="perf-value">~8ms</div>
+                  </div>
+                </div>
+                <div class="perf-group">
+                  <div class="perf-group-label">Warm p99</div>
+                  <div class="perf-row">
+                    <div class="perf-label">Zeppelin</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--zeppelin" data-width="65"></div>
+                    </div>
+                    <div class="perf-value">~120ms</div>
+                  </div>
+                  <div class="perf-row">
+                    <div class="perf-label">Turbopuffer</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--competitor" data-width="19"></div>
+                    </div>
+                    <div class="perf-value">~35ms</div>
+                  </div>
+                </div>
+                <div class="perf-group">
+                  <div class="perf-group-label">Cold</div>
+                  <div class="perf-row">
+                    <div class="perf-label">Zeppelin</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--zeppelin" data-width="100"></div>
+                    </div>
+                    <div class="perf-value">~800ms</div>
+                  </div>
+                  <div class="perf-row">
+                    <div class="perf-label">Turbopuffer</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--competitor" data-width="43"></div>
+                    </div>
+                    <div class="perf-value">~343ms</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="fieldset-card">
+              <span class="fieldset-legend">Full-Text Search</span>
+              <div class="pt-2">
+                <div class="perf-group">
+                  <div class="perf-group-label">Warm p50</div>
+                  <div class="perf-row">
+                    <div class="perf-label">Zeppelin</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--zeppelin" data-width="20"></div>
+                    </div>
+                    <div class="perf-value">~20ms</div>
+                  </div>
+                  <div class="perf-row">
+                    <div class="perf-label">Turbopuffer</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--competitor" data-width="11"></div>
+                    </div>
+                    <div class="perf-value">~11ms</div>
+                  </div>
+                </div>
+                <div class="perf-group">
+                  <div class="perf-group-label">Cold</div>
+                  <div class="perf-row">
+                    <div class="perf-label">Zeppelin</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--zeppelin" data-width="54"></div>
+                    </div>
+                    <div class="perf-value">~120ms</div>
+                  </div>
+                  <div class="perf-row">
+                    <div class="perf-label">Turbopuffer</div>
+                    <div class="perf-bar-track">
+                      <div class="perf-bar perf-bar--competitor" data-width="100"></div>
+                    </div>
+                    <div class="perf-value">~221ms</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Competitor cost comparison -->
+          <div class="compact-col">
+            <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-2">Cost comparison</h2>
+            <p class="text-sm text-gray-500 mb-6">Cheap now — the gap only grows at scale</p>
+
+            <!-- 1M vectors -->
+            <div class="fieldset-card mb-6">
+              <span class="fieldset-legend">Monthly cost — 1M vectors</span>
+              <div class="pt-2">
+                <div class="perf-row">
+                  <div class="perf-label">Zeppelin</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--zeppelin" data-width="7"></div>
+                  </div>
+                  <div class="perf-value">~$5/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Weaviate</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="36"></div>
+                  </div>
+                  <div class="perf-value">~$25/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Turbopuffer</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="91"></div>
+                  </div>
+                  <div class="perf-value">~$64/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Qdrant Cloud</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="93"></div>
+                  </div>
+                  <div class="perf-value">~$65/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Pinecone</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="100"></div>
+                  </div>
+                  <div class="perf-value">~$70/mo</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 10M vectors -->
+            <div class="fieldset-card">
+              <span class="fieldset-legend">Monthly cost — 10M vectors</span>
+              <div class="pt-2">
+                <div class="perf-row">
+                  <div class="perf-label">Zeppelin</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--zeppelin" data-width="7"></div>
+                  </div>
+                  <div class="perf-value">~$50/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Turbopuffer</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="14"></div>
+                  </div>
+                  <div class="perf-value">~$100/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Weaviate</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="36"></div>
+                  </div>
+                  <div class="perf-value">~$250/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Qdrant Cloud</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="71"></div>
+                  </div>
+                  <div class="perf-value">~$500/mo</div>
+                </div>
+                <div class="perf-row">
+                  <div class="perf-label">Pinecone</div>
+                  <div class="perf-bar-track">
+                    <div class="perf-bar perf-bar--competitor" data-width="100"></div>
+                  </div>
+                  <div class="perf-value">~$700/mo</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== ROW 2: QUICKSTART ========== -->
+    <section id="quickstart" class="py-16 md:py-20 border-t border-black/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="font-mono font-bold text-2xl sm:text-3xl tracking-tight text-navy mb-6">Up and running in 60 seconds</h2>
+
+        <div class="grid md:grid-cols-2 gap-6 md:gap-8">
+          <!-- 1. Start -->
+          <div class="quickstart-card">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex-shrink-0 w-7 h-7 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center">
+                <span class="text-accent font-mono font-bold text-xs">1</span>
+              </div>
+              <h3 class="text-base font-semibold text-navy">Start</h3>
+            </div>
+            <div class="code-block">
+              <pre class="font-mono text-sm leading-relaxed"><code>docker run -p 3000:3000 \
+  -e <span class="text-blue-400">AWS_ACCESS_KEY_ID</span>=<span class="text-green-400">your-key</span> \
+  -e <span class="text-blue-400">AWS_SECRET_ACCESS_KEY</span>=<span class="text-green-400">your-secret</span> \
+  -e <span class="text-blue-400">ZEPPELIN_BUCKET</span>=<span class="text-green-400">your-bucket</span> \
+  -e <span class="text-blue-400">ZEPPELIN_REGION</span>=<span class="text-green-400">us-east-1</span> \
+  ghcr.io/zepdb/zeppelin:latest</code></pre>
+            </div>
+          </div>
+
+          <!-- 2. Create a namespace -->
+          <div class="quickstart-card">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex-shrink-0 w-7 h-7 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center">
+                <span class="text-accent font-mono font-bold text-xs">2</span>
+              </div>
+              <h3 class="text-base font-semibold text-navy">Create a namespace</h3>
+            </div>
+            <div class="code-block">
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -d <span class="text-green-400">'{
+    <span class="text-blue-400">"dimensions"</span>: <span class="text-orange-400">768</span>,
+    <span class="text-blue-400">"metric"</span>: <span class="text-green-400">"cosine"</span>
+  }'</span></code></pre>
+            </div>
+          </div>
+
+          <!-- 3. Upsert -->
+          <div class="quickstart-card">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex-shrink-0 w-7 h-7 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center">
+                <span class="text-accent font-mono font-bold text-xs">3</span>
+              </div>
+              <h3 class="text-base font-semibold text-navy">Upsert</h3>
+            </div>
+            <div class="code-block">
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace/vectors \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -d <span class="text-green-400">'{
+    <span class="text-blue-400">"vectors"</span>: [
+      {
+        <span class="text-blue-400">"id"</span>: <span class="text-green-400">"vec-1"</span>,
+        <span class="text-blue-400">"values"</span>: [<span class="text-orange-400">0.1</span>, <span class="text-orange-400">0.2</span>, <span class="text-orange-400">0.3</span>, <span class="text-gray-500">"..."</span>],
+        <span class="text-blue-400">"attributes"</span>: {
+          <span class="text-blue-400">"category"</span>: <span class="text-green-400">"science"</span>,
+          <span class="text-blue-400">"year"</span>: <span class="text-orange-400">2024</span>
+        }
+      }
+    ]
+  }'</span></code></pre>
+            </div>
+          </div>
+
+          <!-- 4. Query -->
+          <div class="quickstart-card">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="flex-shrink-0 w-7 h-7 rounded-full bg-accent/10 border border-accent/30 flex items-center justify-center">
+                <span class="text-accent font-mono font-bold text-xs">4</span>
+              </div>
+              <h3 class="text-base font-semibold text-navy">Query</h3>
+            </div>
+            <div class="code-block">
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace/query \
+  -H <span class="text-green-400">"Content-Type: application/json"</span> \
+  -d <span class="text-green-400">'{
+    <span class="text-blue-400">"vector"</span>: [<span class="text-orange-400">0.1</span>, <span class="text-orange-400">0.2</span>, <span class="text-orange-400">0.3</span>, <span class="text-gray-500">"..."</span>],
+    <span class="text-blue-400">"top_k"</span>: <span class="text-orange-400">10</span>,
+    <span class="text-blue-400">"filters"</span>: {
+      <span class="text-blue-400">"op"</span>: <span class="text-green-400">"And"</span>,
+      <span class="text-blue-400">"conditions"</span>: [
+        {<span class="text-blue-400">"op"</span>: <span class="text-green-400">"Eq"</span>, <span class="text-blue-400">"field"</span>: <span class="text-green-400">"category"</span>, <span class="text-blue-400">"value"</span>: <span class="text-green-400">"science"</span>},
+        {<span class="text-blue-400">"op"</span>: <span class="text-green-400">"Gte"</span>, <span class="text-blue-400">"field"</span>: <span class="text-green-400">"year"</span>, <span class="text-blue-400">"value"</span>: <span class="text-orange-400">2020</span>}
+      ]
+    },
+    <span class="text-blue-400">"include_attributes"</span>: <span class="text-orange-400">true</span>
+  }'</span></code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="border-t border-black/10 bg-surface">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <!-- Brand -->
+        <div class="col-span-2 md:col-span-1">
+          <a href="#" class="flex items-center gap-2 mb-4">
+            <img src="assets/icon.svg" alt="Zeppelin logo" class="h-16 w-16">
+            <span class="text-2xl font-semibold text-navy">Zeppelin</span>
+          </a>
+          <p class="text-sm text-gray-500">S3-native vector search engine.</p>
+          <p class="text-sm text-gray-500 mt-2">Built with Rust.</p>
+        </div>
+
+        <!-- Product -->
+        <div>
+          <h4 class="text-sm font-semibold text-navy mb-4">Product</h4>
+          <ul class="space-y-2">
+            <li><a href="#features" class="text-sm text-gray-500 hover:text-navy transition-colors">Features</a></li>
+            <li><a href="#quickstart" class="text-sm text-gray-500 hover:text-navy transition-colors">Quickstart</a></li>
+          </ul>
+        </div>
+
+        <!-- Developers -->
+        <div>
+          <h4 class="text-sm font-semibold text-navy mb-4">Developers</h4>
+          <ul class="space-y-2">
+            <li><a href="https://github.com/zepdb/zeppelin" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">GitHub</a></li>
+            <li><a href="https://github.com/zepdb/zeppelin/wiki" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">Documentation</a></li>
+            <li><a href="https://github.com/zepdb/zeppelin/wiki" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">API Reference</a></li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="text-sm font-semibold text-navy mb-4">Legal</h4>
+          <ul class="space-y-2">
+            <li><a href="https://github.com/zepdb/zeppelin/blob/main/LICENSE" target="_blank" rel="noopener" class="text-sm text-gray-500 hover:text-navy transition-colors">Apache-2.0 License</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-black/10">
+        <p class="text-sm text-gray-400 text-center">&copy; 2024 Zeppelin Contributors. Apache-2.0 License.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Local scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

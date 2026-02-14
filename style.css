@@ -1,0 +1,467 @@
+/*
+ * Zeppelin Marketing Website — Custom Styles
+ * Light theme, turbopuffer-inspired aesthetic.
+ */
+
+/* ===========================
+   1. Custom Properties
+   =========================== */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #f8f8f8;
+  --color-accent: #e8590c;
+  --color-accent-hover: #d14b00;
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-border-hover: rgba(232, 89, 12, 0.4);
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #555555;
+  --color-text-muted: #888888;
+  --color-nav-bg: #1a1a2e;
+  --color-code-bg: #1e1e2e;
+
+  /* Syntax highlighting (inside dark code blocks) */
+  --syntax-string: #4ade80;
+  --syntax-key: #60a5fa;
+  --syntax-number: #fb923c;
+  --syntax-comment: #6b7280;
+  --syntax-command: #fbbf24;
+}
+
+/* ===========================
+   2. Base & Smooth Scroll
+   =========================== */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===========================
+   3. Selection Color
+   =========================== */
+::selection {
+  background-color: rgba(232, 89, 12, 0.2);
+  color: #1a1a2e;
+}
+
+::-moz-selection {
+  background-color: rgba(232, 89, 12, 0.2);
+  color: #1a1a2e;
+}
+
+/* ===========================
+   4. Scrollbar Styling (WebKit)
+   =========================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d0d0d0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0;
+}
+
+/* Code block scrollbars — thinner, dark theme inside code blocks */
+pre::-webkit-scrollbar {
+  height: 6px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #3a3a4a;
+  border-radius: 3px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ===========================
+   5. Syntax Highlighting Classes
+   =========================== */
+.syntax-string {
+  color: var(--syntax-string);
+}
+
+.syntax-key {
+  color: var(--syntax-key);
+}
+
+.syntax-number {
+  color: var(--syntax-number);
+}
+
+.syntax-comment {
+  color: var(--syntax-comment);
+  font-style: italic;
+}
+
+.syntax-command {
+  color: var(--syntax-command);
+}
+
+/* ===========================
+   6. Code Tab Active State
+   =========================== */
+.code-tab {
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.code-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.code-tab.active {
+  color: var(--color-text-primary);
+  border-bottom-color: var(--color-accent);
+}
+
+/* ===========================
+   7. Card Hover Effects
+   =========================== */
+.feature-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* ===========================
+   8. Code Block Styling
+   =========================== */
+pre {
+  margin: 0;
+  tab-size: 2;
+}
+
+pre code {
+  display: block;
+  white-space: pre;
+  word-break: normal;
+  overflow-x: auto;
+}
+
+/* Dark code block container */
+.code-block {
+  background-color: var(--color-code-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow-x: auto;
+}
+
+.code-block pre {
+  color: #e0e0e0;
+}
+
+/* ===========================
+   9. Fieldset-Style Containers
+   =========================== */
+.fieldset-card {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 24px;
+  position: relative;
+}
+
+.fieldset-card .fieldset-legend {
+  position: absolute;
+  top: -10px;
+  left: 16px;
+  background: var(--color-bg);
+  padding: 0 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ===========================
+   11. Performance Bar Charts
+   =========================== */
+.perf-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.perf-row:last-child {
+  margin-bottom: 0;
+}
+
+.perf-label {
+  flex-shrink: 0;
+  width: 200px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  text-align: right;
+}
+
+.perf-bar-track {
+  flex: 1;
+  height: 24px;
+  background: var(--color-surface);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+
+.perf-bar {
+  height: 100%;
+  border-radius: 2px;
+  width: 0;
+  transition: width 1s ease-out;
+}
+
+.perf-bar--warm {
+  background: var(--color-nav-bg);
+}
+
+.perf-bar--cold {
+  background: var(--color-accent);
+}
+
+.perf-bar--zeppelin {
+  background: var(--color-accent);
+}
+
+.perf-bar--competitor {
+  background: #c0c0c8;
+}
+
+.perf-value {
+  flex-shrink: 0;
+  width: 100px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Perf group spacing for comparison charts */
+.perf-group {
+  margin-bottom: 14px;
+}
+
+.perf-group:last-child {
+  margin-bottom: 0;
+}
+
+.perf-group-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.perf-group .perf-row {
+  margin-bottom: 6px;
+}
+
+.perf-group .perf-row:last-child {
+  margin-bottom: 0;
+}
+
+/* ===========================
+   12. Button Styles
+   =========================== */
+
+/* Orange outlined button (primary CTA) */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Dark outlined button (secondary CTA) */
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid var(--color-border);
+  color: var(--color-text-primary);
+  border-radius: 6px;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: rgba(0, 0, 0, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Nav CTA buttons (on dark background) */
+.btn-nav-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1.5px solid var(--color-accent);
+  color: var(--color-accent);
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-nav-primary:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+.btn-nav-ghost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-nav-ghost:hover {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===========================
+   13. Nav Styling
+   =========================== */
+nav.sticky {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* ===========================
+   14. Stats Bar — Dotted Separator
+   =========================== */
+.stats-bar {
+  border-top: 1px dashed var(--color-border);
+  border-bottom: 1px dashed var(--color-border);
+}
+
+/* ===========================
+   15. Fade-In Animation
+   =========================== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===========================
+   16. Compact Two-Column Layout
+   =========================== */
+.compact-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.compact-col .fieldset-card {
+  flex: 1;
+}
+
+.compact-col .perf-label {
+  width: 140px;
+}
+
+.compact-col .perf-value {
+  width: 90px;
+}
+
+/* ===========================
+   17. Responsive Adjustments
+   =========================== */
+@media (max-width: 639px) {
+  pre {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .code-block {
+    padding: 1rem;
+  }
+
+  /* Perf bar labels shrink on mobile */
+  .perf-label {
+    width: 120px;
+    font-size: 11px;
+  }
+
+  .perf-value {
+    width: 70px;
+    font-size: 11px;
+  }
+}
+
+/* Tabs: horizontal scroll on small screens */
+@media (max-width: 639px) {
+  .tab-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tab-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .code-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
+
+/* Quickstart step circles on mobile */
+@media (max-width: 639px) {
+  #quickstart .flex-shrink-0.w-7 {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

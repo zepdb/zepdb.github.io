@@ -138,6 +138,7 @@
             <p class="text-sm text-gray-500 mt-6 mb-3">
               Install the Zeppelin skill for <a href="https://claude.com/claude-code" target="_blank" rel="noopener" class="text-accent hover:underline">Claude Code</a>.
               <br>Use our hosted instance to create namespaces, store and query data!
+              <br>Just ask Claude to tell you more about this skill and try everything out.
             </p>
             <div class="hero-install-block">
               <pre id="install-command" class="font-mono text-sm"><code>curl -sL https://zepdb.github.io/install.sh | sh</code></pre>
@@ -474,12 +475,11 @@
               <h3 class="text-base font-semibold text-navy">Create a namespace</h3>
             </div>
             <div class="code-block">
-              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace \
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces \
   -H <span class="text-green-400">"Content-Type: application/json"</span> \
-  -d <span class="text-green-400">'{
-    <span class="text-blue-400">"dimensions"</span>: <span class="text-orange-400">768</span>,
-    <span class="text-blue-400">"metric"</span>: <span class="text-green-400">"cosine"</span>
-  }'</span></code></pre>
+  -d <span class="text-green-400">'{<span class="text-blue-400">"dimensions"</span>: <span class="text-orange-400">768</span>}'</span>
+
+<span class="text-gray-500"># Response includes "name": "&lt;uuid&gt;" — save it!</span></code></pre>
             </div>
           </div>
 
@@ -492,7 +492,7 @@
               <h3 class="text-base font-semibold text-navy">Upsert</h3>
             </div>
             <div class="code-block">
-              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace/vectors \
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/<span class="text-yellow-400">&lt;namespace-uuid&gt;</span>/vectors \
   -H <span class="text-green-400">"Content-Type: application/json"</span> \
   -d <span class="text-green-400">'{
     <span class="text-blue-400">"vectors"</span>: [
@@ -518,7 +518,7 @@
               <h3 class="text-base font-semibold text-navy">Query</h3>
             </div>
             <div class="code-block">
-              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/my-namespace/query \
+              <pre class="font-mono text-sm leading-relaxed"><code>curl -X POST http://localhost:3000/v1/namespaces/<span class="text-yellow-400">&lt;namespace-uuid&gt;</span>/query \
   -H <span class="text-green-400">"Content-Type: application/json"</span> \
   -d <span class="text-green-400">'{
     <span class="text-blue-400">"vector"</span>: [<span class="text-orange-400">0.1</span>, <span class="text-orange-400">0.2</span>, <span class="text-orange-400">0.3</span>, <span class="text-gray-500">"..."</span>],

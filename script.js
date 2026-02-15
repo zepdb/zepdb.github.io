@@ -1,3 +1,18 @@
+// ---------------------------------------------------------------------------
+// 0. Copy-to-clipboard for hero install command
+// ---------------------------------------------------------------------------
+function copyInstallCommand() {
+  var cmd = 'mkdir -p ~/.claude/skills/zeppelin && curl -sL https://raw.githubusercontent.com/zepdb/zeppelin/main/SKILL.md > ~/.claude/skills/zeppelin/SKILL.md';
+  navigator.clipboard.writeText(cmd).then(function() {
+    document.getElementById('copy-icon').classList.add('hidden');
+    document.getElementById('check-icon').classList.remove('hidden');
+    setTimeout(function() {
+      document.getElementById('copy-icon').classList.remove('hidden');
+      document.getElementById('check-icon').classList.add('hidden');
+    }, 2000);
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
   // ---------------------------------------------------------------------------

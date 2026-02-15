@@ -366,6 +366,43 @@ pre code {
 }
 
 /* ===========================
+   12b. Hero Install Command Block
+   =========================== */
+.hero-install-block {
+  position: relative;
+  background: var(--color-code-bg);
+  border-radius: 8px;
+  padding: 0.875rem 3rem 0.875rem 1rem;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.hero-install-block pre {
+  margin: 0;
+  white-space: nowrap;
+  color: #e0e0e0;
+}
+
+.hero-install-block .copy-btn {
+  position: absolute;
+  top: 50%;
+  right: 0.625rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 0.375rem;
+  border-radius: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.hero-install-block .copy-btn:hover {
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.08);
+}
+
+/* ===========================
    13. Nav Styling
    =========================== */
 nav.sticky {

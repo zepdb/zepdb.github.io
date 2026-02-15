@@ -135,18 +135,6 @@
               S3 is the source of truth. Nodes are stateless. Vector, full-text, and hybrid search.
               <br>Fully open source.
             </p>
-            <div class="mt-8 max-w-lg">
-              <p class="text-sm text-gray-500 mb-3">
-                Install the Zeppelin skill for <a href="https://claude.com/claude-code" target="_blank" rel="noopener" class="text-accent hover:underline">Claude Code</a> — gives your agent the full API reference, hosted embedding endpoint, and 1.15M pre-loaded papers to search.
-              </p>
-              <div class="hero-install-block">
-                <pre id="install-command" class="font-mono text-sm"><code>mkdir -p ~/.claude/skills/zeppelin && curl -sL https://raw.githubusercontent.com/zepdb/zeppelin/main/SKILL.md > ~/.claude/skills/zeppelin/SKILL.md</code></pre>
-                <button onclick="copyInstallCommand()" id="copy-btn" class="copy-btn" title="Copy to clipboard">
-                  <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                  <svg id="check-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </button>
-              </div>
-            </div>
           </div>
 
           <!-- Right: Features Grid -->
@@ -181,6 +169,19 @@
               <h3 class="text-sm font-semibold text-navy mb-1">Formally Verified</h3>
               <p class="text-xs text-gray-500 leading-relaxed">26 TLA+ specs prove WAL, compaction, and CAS correctness.</p>
             </div>
+          </div>
+        </div>
+        <!-- Install block: full-width below the grid, centered -->
+        <div class="mt-10 max-w-4xl mx-auto text-center">
+          <p class="text-sm text-gray-500 mb-3">
+            Install the Zeppelin skill for <a href="https://claude.com/claude-code" target="_blank" rel="noopener" class="text-accent hover:underline">Claude Code</a> — gives your agent the full API reference and hosted embedding endpoint.
+          </p>
+          <div class="hero-install-block">
+            <pre id="install-command" class="font-mono text-sm"><code>mkdir -p ~/.claude/skills/zeppelin && curl -sL https://raw.githubusercontent.com/zepdb/zeppelin/main/SKILL.md > ~/.claude/skills/zeppelin/SKILL.md</code></pre>
+            <button onclick="copyInstallCommand()" id="copy-btn" class="copy-btn" title="Copy to clipboard">
+              <svg id="copy-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <svg id="check-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
           </div>
         </div>
       </div>
